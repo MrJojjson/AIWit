@@ -1,16 +1,18 @@
-const fetchPost = () => fetch('http://192.168.0.3:8081/data', {
+const answerFromWitUrl = 'http://192.168.0.3:8081/message';
+
+const fetchPost = (url, message) => fetch(url, {
   method: 'POST',
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json',
   },
   body: JSON.stringify({
-    sentence: '',
+    message
   }),
 });
 
-export const getAnswerFromWit = () => {
-  return fetchPost()
+export const getAnswerFromWit = (message) => {
+  return fetchPost(answerFromWitUrl, message)
     .then((response) => {
       const { status, _bodyInit } = response;
       var text = _bodyInit;

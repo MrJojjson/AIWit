@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, KeyboardAvoidingView } from 'react-native';
+import layout from '../constants/layout';
 
 export const Container = props => {
   const { children, vertical } = props;
@@ -17,6 +18,23 @@ export const Container = props => {
   );
 }
 
+export const MessageContainer = props => {
+  const { children } = props;
+  return (
+    <ScrollView
+      ref={ref => this.scrollView = ref}
+      contentContainerStyle={[
+        styles.contentContainerStyle,
+      ]}
+      onContentSizeChange={(contentWidth, contentHeight)=>{        
+        this.scrollView.scrollToEnd({animated: true});
+      }}
+    >
+      {children}
+    </ScrollView>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -24,9 +42,9 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'flex-end',
   },
-  // contentContainerStyle: {
-  //   flex:1,
-  //   alignItems:'center',
-  //   justifyContent:'center',
-  // },
+  contentContainerStyle: {
+    width: layout.width,
+    justifyContent:'flex-end',
+    padding: layout.padding,
+  },
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextInput, StyleSheet, Text, TouchableOpacity, Platform } from 'react-native';
+import { TextInput, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { connect } from 'react-redux';
 import { getIcon } from './icon';
 
@@ -10,9 +10,7 @@ import layout from '../../constants/layout';
 import colors from '../../constants/colors';
 
 const onChange = (props, event) => {
-  const { onChangeInputText, id } = props;
-  console.log('props', props);
-  console.log('event', event);
+  const { onChangeInputText, id } = props
   onChangeInputText(id, event);
 }
 
@@ -56,6 +54,23 @@ export const ButtonGen = (props) => {
   );
 }
 
+export const BubbleGen = (props) => {
+  const { title, secondary, left } = props;
+  return (
+    <View 
+      style={[
+        styles.bubble,
+        secondary && { backgroundColor: colors.secondaryBackground },
+        {alignSelf: left ? 'flex-start' : 'flex-end'},
+      ]}
+    >
+      <Text style={styles.bubbleText}>
+        {title}
+      </Text>
+    </View>
+  );
+}
+
 const mapStateToProps = state => state;
 
 const mapDispatchToProps = dispatch => {
@@ -90,6 +105,19 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   buttonText: {
+    color: colors.secondaryText,
+  },
+  bubble: {
+    backgroundColor: colors.primaryBackground,
+    paddingLeft: layout.padding,
+    paddingRight: layout.padding,
+    paddingTop: layout.padding / 2,
+    paddingBottom: layout.padding / 2,
+    borderRadius: layout.padding / 2,
+    marginTop: layout.padding / 2,
+    maxWidth: layout.width / 1.4,
+  },
+  bubbleText: {
     color: colors.secondaryText,
   },
 });

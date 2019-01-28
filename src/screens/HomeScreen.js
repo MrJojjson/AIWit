@@ -5,28 +5,52 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 
-import { Container } from '../components/Wrappers';
+import { Container, MessageContainer } from '../components/Wrappers';
+import Messages from '../components/Messages';
+
 import InputGen, { ButtonGen } from '../components/generic';
 
-import { onChangeInputText } from '../actions';
-import { getInputText } from '../selectors';
+import {
+  onChangeInputText,
+  saveMessageAndAnswer,
+  setErrorMessage,
+  setInitialData,
+} from '../actions';
 
-import { getAnswerFromWit } from '../apiservices';
+import { getInputText, getMessagesText } from '../selectors';
+
+import { getAnswerFromWit, getInitData, setNewUser, getDiscogs, getBooks } from '../apiservices';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
 
+  componentWillMount = () => {
+    console.log('ACHTUNG => Home screen mounting');
+    const { setInitialData, setErrorMessage } = this.props;
+    const user = '1';
+    getInitData(user)
+      .then((response) => {
+        const { text } = response;
+        console.log('Message recieved => ', text);
+        setInitialData(text)
+      }).catch(error => {
+        setErrorMessage(error);
+      })
+  };
+  
+
   onClickButton = () => {
-    console.log('Message sent!');
-    const { state, onChangeInputText } = this.props;
+    const { state, onChangeInputText, saveMessageAndAnswer } = this.props;
     const id = 'messageInput';
     const message = getInputText(state, id);
-    getAnswerFromWit(message)
+    console.log('Message sent => ', message);
+    getBooks(message)
       .then((response) => {
-        console.log('Message recieved => ', response.text);
-        return response.text;
+        const { text } = response;
+        console.log('Message recieved => ', text);
+        saveMessageAndAnswer(text);
       }).then(() => {
         onChangeInputText(id, '');
       })
@@ -35,6 +59,9 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <Container vertical='flex-end'>
+        <MessageContainer>
+          <Messages />
+        </MessageContainer>
         <View style={styles.inputButtonContainer}>
           <InputGen
             id="messageInput"
@@ -63,7 +90,16 @@ const mapDispatchToProps = dispatch => {
   return {
     onChangeInputText: (id, value) => {
       dispatch(onChangeInputText(id, value))
-    }
+    },
+    saveMessageAndAnswer: response => {
+      dispatch(saveMessageAndAnswer(response))
+    },
+    setErrorMessage: error => {
+      dispatch(setErrorMessage(error))
+    },
+    setInitialData: text => {
+      dispatch(setInitialData(text))
+    },
   }
 }
 

@@ -5,7 +5,6 @@ import colors from '../../constants/colors';
 import layout from '../../constants/layout';
 
 export const getIcon = icon => {
-  console.log('icon props', icon);
   return (
     <Icon.Ionicons
       size={layout.icon}

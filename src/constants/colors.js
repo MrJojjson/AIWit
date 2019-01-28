@@ -11,5 +11,5 @@ export default {
   primaryBorder: '#e4405f',
   secondaryBorder: '#e4405f',
   primaryBackground: '#e4405f',
-  secondaryBackground: '#e4405f',
+  secondaryBackground: '#3aaf85',
 };

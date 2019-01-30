@@ -7,8 +7,6 @@ import { getMessagesText } from '../selectors';
 
 import { BubbleGen } from './generic';
 
-import Colors from '../constants/colors';
-
 class AnswersFromWit extends React.Component {
 
   renderMessages(){

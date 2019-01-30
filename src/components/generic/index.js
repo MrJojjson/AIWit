@@ -1,7 +1,8 @@
 import React from 'react';
-import { TextInput, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { TextInput, StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
 import { connect } from 'react-redux';
-import { getIcon } from './icon';
+
+import { Icon } from 'expo';
 
 import { onChangeInputText } from '../../actions';
 import { getInputText } from '../../selectors';
@@ -15,7 +16,7 @@ const onChange = (props, event) => {
 }
 
 const InputGen = (props) => {
-  const { state, id, placeholder, width, height } = props;
+  const { state, id, placeholder, width, heightMultiplier } = props;
   const value = getInputText(state, id);
   return (
     <TextInput
@@ -25,29 +26,63 @@ const InputGen = (props) => {
       style={[
         styles.inputContainer,
         width && { width: `${width}%` },
-        height && { height: layout[height] },
+        heightMultiplier && { height: layout.elementHeight * heightMultiplier },
       ]}
     />
   );
 }
 
+export const TextGen = (props) => {
+  const { title, lines, align, border, fromButton } = props;
+  return (
+    <Text
+      style={[
+        styles.text,
+        align && { textAlign: align },
+        !border && fromButton && { color: colors.secondaryText },
+        border && { color: colors.primaryBackground },
+      ]}
+      numberOfLines={lines || null}
+    >
+      {title}
+    </Text>
+  );
+}
+
+export const IconGen = (props) => {
+  const { icon, sizeMultiplier, border } = props;
+  return (
+    <Icon.Ionicons
+      size={layout.icon * (sizeMultiplier || 1)}
+      color={border ? colors.primaryBackground : colors.secondaryText}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-${icon}`
+          : `md-${icon}`
+      }
+    />
+  )
+}
+
 export const ButtonGen = (props) => {
-  const { onButtonPress, title, width, height, icon } = props;
+  const { onButtonPress, title, width, heightMultiplier, icon, border, secondary } = props;
+  const fromButton = true;
   return (
     <TouchableOpacity
       onPress={onButtonPress}
       style={[
         styles.buttonContainer,
         width && { width: `${width}%` },
-        height && { height: layout[height] },
+        heightMultiplier && { height: layout.elementHeight * heightMultiplier },
+        border && { backgroundColor: '' },
+        border && border === 'none' && { border: 'none' },
+        border && border === 'full' && { borderColor: colors.primaryBackground, borderWidth: 1 },
       ]}
     >
       {
-        (icon && getIcon(icon))
+        (icon && IconGen({icon, border}))
         ||
-        <Text style={styles.buttonText}>
-          {title}
-        </Text>
+        TextGen({title, border, fromButton})
       }
       
     </TouchableOpacity>
@@ -90,22 +125,24 @@ const styles = StyleSheet.create({
   inputContainer: {
     height: layout.elementHeight,
     width: layout.width,
-    borderColor: colors.primaryBackground,
-    borderWidth: 2,
+    borderBottomColor: colors.primaryBackground,
+    borderBottomWidth: 1,
     paddingLeft: 10,
     paddingRight: 10,
+    margin: 10
   },
   buttonContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     height: layout.elementHeight,
     width: layout.width,
-    backgroundColor: colors.primaryBackground,
     paddingLeft: 10,
     paddingRight: 10,
+    backgroundColor: colors.primaryBackground,
   },
-  buttonText: {
-    color: colors.secondaryText,
+  text: {
+    fontSize: layout.text,
+    color: colors.primaryText,
   },
   bubble: {
     backgroundColor: colors.primaryBackground,

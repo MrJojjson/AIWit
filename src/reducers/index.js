@@ -8,9 +8,11 @@ import {
 
 const initialState = {
   loading: true,
+  loggedIn: false,
   errorMessage: '',
   messages: [],
-  inputsText: []
+  inputsText: [],
+  registrationState: 'signIn'
 };
 
 const reducer = (state = initialState, action) => {

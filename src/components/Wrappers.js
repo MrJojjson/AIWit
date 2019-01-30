@@ -5,14 +5,14 @@ import layout from '../constants/layout';
 export const Container = props => {
   const { children, vertical } = props;
   return (
-    /* <ScrollView
-      style={styles.container}
-      contentContainerStyle={[
-        styles.contentContainerStyle,
-        vertical && { justifyContent: vertical }
+    <KeyboardAvoidingView 
+      style={[
+        styles.container,
+        {justifyContent: vertical},
       ]}
-    > */
-    <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+      behavior="padding"
+      enabled
+    >
       {children}
     </KeyboardAvoidingView>
   );

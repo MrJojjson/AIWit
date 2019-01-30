@@ -26,19 +26,19 @@ class HomeScreen extends React.Component {
     header: null,
   };
 
-  componentWillMount = () => {
-    console.log('ACHTUNG => Home screen mounting');
-    const { setInitialData, setErrorMessage } = this.props;
-    const user = '1';
-    getInitData(user)
-      .then((response) => {
-        const { text } = response;
-        console.log('Message recieved => ', text);
-        setInitialData(text)
-      }).catch(error => {
-        setErrorMessage(error);
-      })
-  };
+  // componentWillMount = () => {
+  //   console.log('ACHTUNG => Home screen mounting');
+  //   const { setInitialData, setErrorMessage } = this.props;
+  //   const user = '1';
+  //   getInitData(user)
+  //     .then((response) => {
+  //       const { text } = response;
+  //       console.log('Message recieved => ', text);
+  //       setInitialData(text)
+  //     }).catch(error => {
+  //       setErrorMessage(error);
+  //     })
+  // };
   
 
   onClickButton = () => {
